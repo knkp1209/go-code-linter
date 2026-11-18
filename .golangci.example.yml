@@ -1,0 +1,12 @@
+version: "2"
+
+linters:
+  enable:
+    - funccomment
+
+  settings:
+    custom:
+      funccomment:
+        type: module
+        description: Require every function to have a name-prefixed comment
+        original-url: github.com/knkp1209/function-comment-linter
