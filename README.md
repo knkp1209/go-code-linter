@@ -9,9 +9,12 @@ are ignored.
 
 - Go 1.25.4 or newer
 - `golangci-lint` 2.6.2 (the version in `.custom-gcl.yml`)
+- A network connection that can download the tagged module version `v0.1.0`
 
-Use the same Go version for the build and lint runs. If the local Go cache was
-created by another Go version, use a fresh writable cache, for example:
+Use the same Go version for the build and lint runs. The published plugin is
+loaded from the `v0.1.0` Git tag in `.custom-gcl.yml`; do not add `path: .` to
+that shared configuration. If the local Go cache was created by another Go
+version, use a fresh writable cache, for example:
 
 ```bash
 GOCACHE=/private/tmp/function-comment-linter-gocache golangci-lint custom -v
@@ -19,15 +22,17 @@ GOCACHE=/private/tmp/function-comment-linter-gocache golangci-lint custom -v
 
 The command writes the custom binary as `./custom-gcl`; it is ignored by Git.
 
-## Build and run
+## Build and run in another project
 
-Build the custom binary:
+Copy `.custom-gcl.yml` and `.golangci.example.yml` into the project that will
+use this plugin. Rename the latter to `.golangci.yml`, then build the custom
+binary:
 
 ```bash
 golangci-lint custom -v
 ```
 
-Copy `.golangci.example.yml` to `.golangci.yml`, then run:
+Run the generated binary:
 
 ```bash
 ./custom-gcl run --config .golangci.yml ./...
@@ -35,6 +40,24 @@ Copy `.golangci.example.yml` to `.golangci.yml`, then run:
 
 The `custom` entry in the configuration is required so the generated binary
 knows how to register the module plugin.
+
+The generated `custom-gcl` is platform-specific. Build it separately on each
+machine and keep it out of version control.
+
+## Local plugin development
+
+This repository keeps a separate `.custom-gcl.local.yml` for testing the
+working tree before publishing a tag. It uses `path: .` so local source edits
+are loaded directly:
+
+```bash
+cp .custom-gcl.local.yml .custom-gcl.yml
+golangci-lint custom -v
+./custom-gcl run --config .golangci.yml ./...
+```
+
+After publishing a new tag, update the `version` in `.custom-gcl.yml` and in
+the consuming projects.
 
 ## Examples
 

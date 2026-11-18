@@ -84,5 +84,7 @@ func hasNamePrefixedComment(fn *ast.FuncDecl, name string) bool {
 		return false
 	}
 
-	return strings.ContainsFunc(remainder, unicode.Is(unicode.Han))
+	return strings.ContainsFunc(remainder, func(r rune) bool {
+		return unicode.Is(unicode.Han, r)
+	})
 }
