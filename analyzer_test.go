@@ -16,6 +16,7 @@ func TestHasNamePrefixedComment(t *testing.T) {
 		{name: "missing", src: "func Foo() {}", want: false},
 		{name: "missing description", src: "// Foo\nfunc Foo() {}", want: false},
 		{name: "Chinese description", src: "// Foo 执行处理。\nfunc Foo() {}", want: true},
+		{name: "Chinese description on next line", src: "// Foo\n// 执行处理。\nfunc Foo() {}", want: true},
 		{name: "colon", src: "// Foo: 执行处理。\nfunc Foo() {}", want: true},
 		{name: "full width colon", src: "// Foo：执行处理。\nfunc Foo() {}", want: true},
 		{name: "English description", src: "// Foo does something.\nfunc Foo() {}", want: false},
@@ -26,7 +27,7 @@ func TestHasNamePrefixedComment(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			file, err := parser.ParseFile(token.NewFileSet(), "test.go", tt.src, parser.ParseComments)
+			file, err := parser.ParseFile(token.NewFileSet(), "test.go", "package p\n\n"+tt.src, parser.ParseComments)
 			if err != nil {
 				t.Fatal(err)
 			}

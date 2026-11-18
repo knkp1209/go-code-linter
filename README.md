@@ -9,10 +9,10 @@ are ignored.
 
 - Go 1.25.4 or newer
 - `golangci-lint` 2.6.2 (the version in `.custom-gcl.yml`)
-- A network connection that can download the tagged module version `v0.1.0`
+- A network connection that can download the tagged module version `v0.1.1`
 
 Use the same Go version for the build and lint runs. The published plugin is
-loaded from the `v0.1.0` Git tag in `.custom-gcl.yml`; do not add `path: .` to
+loaded from the `v0.1.1` Git tag in `.custom-gcl.yml`; do not add `path: .` to
 that shared configuration. If the local Go cache was created by another Go
 version, use a fresh writable cache, for example:
 
@@ -66,6 +66,10 @@ Valid comments include:
 ```go
 // ProcessData 加载数据。
 func ProcessData() {}
+
+// pathAnalysisConcurrencyKey
+// 构造用户路径分析并发租约使用的 Redis key。
+func pathAnalysisConcurrencyKey() {}
 
 /*
 processData 加载数据。

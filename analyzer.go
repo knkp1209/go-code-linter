@@ -69,15 +69,14 @@ func hasNamePrefixedComment(fn *ast.FuncDecl, name string) bool {
 	}
 
 	rawRemainder := strings.TrimPrefix(firstLine, name)
-	if rawRemainder == "" {
-		return false
-	}
-	firstRemainder, _ := utf8.DecodeRuneInString(rawRemainder)
-	if !unicode.IsSpace(firstRemainder) && firstRemainder != ':' && firstRemainder != '：' {
-		return false
+	if rawRemainder != "" {
+		firstRemainder, _ := utf8.DecodeRuneInString(rawRemainder)
+		if !unicode.IsSpace(firstRemainder) && firstRemainder != ':' && firstRemainder != '：' {
+			return false
+		}
 	}
 
-	remainder := strings.TrimSpace(rawRemainder)
+	remainder := strings.TrimSpace(strings.TrimPrefix(comment, name))
 	remainder = strings.TrimSpace(strings.TrimPrefix(remainder, ":"))
 	remainder = strings.TrimSpace(strings.TrimPrefix(remainder, "："))
 	if remainder == "" {
