@@ -1,0 +1,6 @@
+version: v2.0.0
+
+plugins:
+  - module: github.com/knkp1209/function-comment-linter
+    import: github.com/knkp1209/function-comment-linter/plugin
+    path: .
