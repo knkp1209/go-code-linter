@@ -1,4 +1,4 @@
-module github.com/knkp1209/function-comment-linter
+module github.com/knkp1209/go-comment-linter
 
 go 1.25.4
 

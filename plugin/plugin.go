@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/golangci/plugin-module-register/register"
-	funccomment "github.com/knkp1209/function-comment-linter"
+	funccomment "github.com/knkp1209/go-comment-linter"
 	"golang.org/x/tools/go/analysis"
 )
 
