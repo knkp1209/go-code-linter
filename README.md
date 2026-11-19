@@ -1,4 +1,4 @@
-# go-comment-linter
+# go-code-linter
 
 `funccomment` is a module plugin for `golangci-lint` that requires every Go
 function and method to have a doc comment whose first line starts with its
@@ -41,7 +41,7 @@ that shared configuration. If the local Go cache was created by another Go
 version, use a fresh writable cache, for example:
 
 ```bash
-GOCACHE=/private/tmp/go-comment-linter-gocache golangci-lint custom -v
+GOCACHE=/private/tmp/go-code-linter-gocache golangci-lint custom -v
 ```
 
 The command writes the custom binary as `./custom-gcl`; it is ignored by Git.
@@ -116,5 +116,5 @@ only contains the function name or only English text is reported.
 Run the unit and analyzer tests with:
 
 ```bash
-GOCACHE=/private/tmp/go-comment-linter-gocache go test ./...
+GOCACHE=/private/tmp/go-code-linter-gocache go test ./...
 ```

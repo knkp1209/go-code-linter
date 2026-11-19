@@ -1,4 +1,4 @@
-package funccomment
+package codelint
 
 import (
 	"go/ast"

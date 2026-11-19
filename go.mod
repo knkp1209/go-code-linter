@@ -1,4 +1,4 @@
-module github.com/knkp1209/go-comment-linter
+module github.com/knkp1209/go-code-linter
 
 go 1.25.4
 

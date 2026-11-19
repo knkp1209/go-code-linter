@@ -1,6 +1,6 @@
 version: v2.6.2
 
 plugins:
-  - module: github.com/knkp1209/go-comment-linter
-    import: github.com/knkp1209/go-comment-linter/plugin
+  - module: github.com/knkp1209/go-code-linter
+    import: github.com/knkp1209/go-code-linter/plugin
     path: .

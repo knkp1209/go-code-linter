@@ -12,16 +12,16 @@ linters:
       funccomment:
         type: module
         description: Require every function to have a name-prefixed comment
-        original-url: https://github.com/knkp1209/go-comment-linter
+        original-url: https://github.com/knkp1209/go-code-linter
       constcomment:
         type: module
         description: Require every constant to have a name-prefixed comment
-        original-url: https://github.com/knkp1209/go-comment-linter
+        original-url: https://github.com/knkp1209/go-code-linter
       structcomment:
         type: module
         description: Require every struct and field to have a name-prefixed comment
-        original-url: https://github.com/knkp1209/go-comment-linter
+        original-url: https://github.com/knkp1209/go-code-linter
       mixedreceiver:
         type: module
         description: Disallow mixing value and pointer receivers on the same struct
-        original-url: https://github.com/knkp1209/go-comment-linter
+        original-url: https://github.com/knkp1209/go-code-linter
