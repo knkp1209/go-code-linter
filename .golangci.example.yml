@@ -5,6 +5,7 @@ linters:
     - funccomment
     - constcomment
     - structcomment
+    - mixedreceiver
 
   settings:
     custom:
@@ -19,4 +20,8 @@ linters:
       structcomment:
         type: module
         description: Require every struct and field to have a name-prefixed comment
+        original-url: https://github.com/knkp1209/go-comment-linter
+      mixedreceiver:
+        type: module
+        description: Disallow mixing value and pointer receivers on the same struct
         original-url: https://github.com/knkp1209/go-comment-linter

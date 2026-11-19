@@ -21,6 +21,7 @@ func (p *functionCommentPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 		funccomment.Analyzer,
 		funccomment.ConstAnalyzer,
 		funccomment.StructAnalyzer,
+		funccomment.MixedReceiverAnalyzer,
 	}, nil
 }
 

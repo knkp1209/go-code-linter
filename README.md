@@ -11,6 +11,9 @@ when both checks are wanted.
 The separate `structcomment` rule requires every struct type and every named
 field in that struct to have a name-prefixed comment with Chinese text.
 
+The separate `mixedreceiver` rule reports a struct whose methods mix value and
+pointer receivers. Use one receiver style consistently for each struct.
+
 For example:
 
 ```go

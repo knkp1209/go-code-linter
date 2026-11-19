@@ -7,6 +7,33 @@ import (
 	"testing"
 )
 
+func TestReceiverTypeName(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "test.go", `package p
+type Snapshot struct{}
+func (Snapshot) Value() {}
+func (*Snapshot) Pointer() {}
+`, parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok {
+			continue
+		}
+		name, pointer, ok := receiverTypeName(fn.Recv.List[0].Type)
+		if !ok || name != "Snapshot" {
+			t.Fatalf("receiverTypeName() = %q, %v, %v", name, pointer, ok)
+		}
+		if fn.Name.Name == "Value" && pointer {
+			t.Error("Value should use a value receiver")
+		}
+		if fn.Name.Name == "Pointer" && !pointer {
+			t.Error("Pointer should use a pointer receiver")
+		}
+	}
+}
+
 func TestHasNamePrefixedComment(t *testing.T) {
 	tests := []struct {
 		name string
