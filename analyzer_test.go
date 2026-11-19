@@ -17,6 +17,7 @@ func TestHasNamePrefixedComment(t *testing.T) {
 		{name: "missing description", src: "// Foo\nfunc Foo() {}", want: false},
 		{name: "Chinese description", src: "// Foo 执行处理。\nfunc Foo() {}", want: true},
 		{name: "Chinese description on next line", src: "// Foo\n// 执行处理。\nfunc Foo() {}", want: true},
+		{name: "English suffix with Chinese on next line", src: "// Foo xxxxj\n// 执行处理。\nfunc Foo() {}", want: true},
 		{name: "colon", src: "// Foo: 执行处理。\nfunc Foo() {}", want: true},
 		{name: "full width colon", src: "// Foo：执行处理。\nfunc Foo() {}", want: true},
 		{name: "English description", src: "// Foo does something.\nfunc Foo() {}", want: false},
@@ -32,9 +33,47 @@ func TestHasNamePrefixedComment(t *testing.T) {
 				t.Fatal(err)
 			}
 			fn := file.Decls[0].(*ast.FuncDecl)
-			if got := hasNamePrefixedComment(fn, "Foo"); got != tt.want {
+			if got := hasNamePrefixedComment(fn.Doc, "Foo"); got != tt.want {
 				t.Fatalf("hasNamePrefixedComment() = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestRunChecksConstants(t *testing.T) {
+	src := `package p
+
+// GoodConst 有中文说明。
+const GoodConst = 1
+
+const BadConst = 2
+
+const (
+	// GroupedConst 分组常量说明。
+	GroupedConst = 3
+	MissingGroupedConst = 4
+)
+`
+	file, err := parser.ParseFile(token.NewFileSet(), "test.go", src, parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, decl := range file.Decls {
+		if gen, ok := decl.(*ast.GenDecl); ok && gen.Tok.String() == "const" {
+			for _, spec := range gen.Specs {
+				valueSpec := spec.(*ast.ValueSpec)
+				for _, name := range valueSpec.Names {
+					if name.Name == "GoodConst" || name.Name == "GroupedConst" {
+						doc := valueSpec.Doc
+						if doc == nil && len(gen.Specs) == 1 {
+							doc = gen.Doc
+						}
+						if !hasNamePrefixedComment(doc, name.Name) {
+							t.Errorf("expected %s to have a valid comment", name.Name)
+						}
+					}
+				}
+			}
+		}
 	}
 }

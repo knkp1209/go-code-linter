@@ -3,4 +3,4 @@ version: v2.6.2
 plugins:
   - module: github.com/knkp1209/function-comment-linter
     import: github.com/knkp1209/function-comment-linter/plugin
-    version: v0.1.1
+    version: v0.1.2

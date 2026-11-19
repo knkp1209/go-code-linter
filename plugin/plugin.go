@@ -19,6 +19,7 @@ func New(settings any) (register.LinterPlugin, error) {
 func (p *functionCommentPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		funccomment.Analyzer,
+		funccomment.ConstAnalyzer,
 	}, nil
 }
 

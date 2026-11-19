@@ -3,6 +3,7 @@ version: "2"
 linters:
   enable:
     - funccomment
+    - constcomment
 
   settings:
     custom:

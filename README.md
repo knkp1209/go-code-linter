@@ -1,18 +1,24 @@
 # function-comment-linter
 
 `funccomment` is a module plugin for `golangci-lint` that requires every Go
-function and method to have a doc comment whose first line starts with the
-function or method name and contains a Chinese description. `init` functions
-are ignored.
+function and method to have a doc comment whose first line starts with its
+name and contains a Chinese description. `init` functions are ignored.
+
+The separate `constcomment` rule requires every constant to have a
+name-prefixed comment with Chinese text. Enable it together with `funccomment`
+when both checks are wanted.
+
+The Chinese description may appear on a later comment line, so an English
+suffix on the first line can be completed by a later Chinese line.
 
 ## Requirements
 
 - Go 1.25.4 or newer
 - `golangci-lint` 2.6.2 (the version in `.custom-gcl.yml`)
-- A network connection that can download the tagged module version `v0.1.1`
+- A network connection that can download the tagged module version `v0.1.2`
 
 Use the same Go version for the build and lint runs. The published plugin is
-loaded from the `v0.1.1` Git tag in `.custom-gcl.yml`; do not add `path: .` to
+loaded from the `v0.1.2` Git tag in `.custom-gcl.yml`; do not add `path: .` to
 that shared configuration. If the local Go cache was created by another Go
 version, use a fresh writable cache, for example:
 
