@@ -1,19 +1,10 @@
 package plugin
 
 import (
-	"github.com/golangci/plugin-module-register/register"
 	codelint "github.com/knkp1209/go-code-linter"
-	"golang.org/x/tools/go/analysis"
+	plugininternal "github.com/knkp1209/go-code-linter/plugin/internal"
 )
 
-type linterPlugin struct{}
-
-func init() { register.Plugin("structcomment", New) }
-
-func New(any) (register.LinterPlugin, error) { return &linterPlugin{}, nil }
-
-func (*linterPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
-	return []*analysis.Analyzer{codelint.StructCommentAnalyzer}, nil
+func init() {
+	plugininternal.Register("structcomment", codelint.StructCommentAnalyzer)
 }
-
-func (*linterPlugin) GetLoadMode() string { return register.LoadModeSyntax }
