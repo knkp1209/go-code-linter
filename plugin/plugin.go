@@ -20,6 +20,7 @@ func (p *functionCommentPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	return []*analysis.Analyzer{
 		funccomment.Analyzer,
 		funccomment.ConstAnalyzer,
+		funccomment.StructAnalyzer,
 	}, nil
 }
 

@@ -22,6 +22,12 @@ var ConstAnalyzer = &analysis.Analyzer{
 	Run:  runConstants,
 }
 
+var StructAnalyzer = &analysis.Analyzer{
+	Name: "structcomment",
+	Doc:  "require every struct and field to have a name-prefixed Chinese comment",
+	Run:  runStructs,
+}
+
 func run(pass *analysis.Pass) (any, error) {
 	for _, file := range pass.Files {
 		for _, decl := range file.Decls {
@@ -60,6 +66,35 @@ func runConstants(pass *analysis.Pass) (any, error) {
 	return nil, nil
 }
 
+func runStructs(pass *analysis.Pass) (any, error) {
+	for _, file := range pass.Files {
+		for _, decl := range file.Decls {
+			gen, ok := decl.(*ast.GenDecl)
+			if !ok || gen.Tok != token.TYPE {
+				continue
+			}
+			for _, spec := range gen.Specs {
+				typeSpec := spec.(*ast.TypeSpec)
+				structType, ok := typeSpec.Type.(*ast.StructType)
+				if !ok {
+					continue
+				}
+				doc := typeSpec.Doc
+				if doc == nil && len(gen.Specs) == 1 {
+					doc = gen.Doc
+				}
+				checkStructComment(pass, typeSpec.Name.Pos(), doc, typeSpec.Name.Name)
+				for _, field := range structType.Fields.List {
+					for _, name := range field.Names {
+						checkStructComment(pass, name.Pos(), field.Doc, name.Name)
+					}
+				}
+			}
+		}
+	}
+	return nil, nil
+}
+
 func checkFunctionComment(pass *analysis.Pass, fn *ast.FuncDecl) {
 	name := fn.Name.Name
 	if fn.Doc == nil || len(fn.Doc.List) == 0 {
@@ -78,6 +113,16 @@ func checkConstantComment(pass *analysis.Pass, pos token.Pos, doc *ast.CommentGr
 	}
 	if !hasNamePrefixedComment(doc, name) {
 		pass.Reportf(doc.Pos(), "comment for constant %s must start with %s and contain Chinese text", name, name)
+	}
+}
+
+func checkStructComment(pass *analysis.Pass, pos token.Pos, doc *ast.CommentGroup, name string) {
+	if doc == nil || len(doc.List) == 0 {
+		pass.Reportf(pos, "struct or field %s must have a comment starting with its name and containing Chinese text", name)
+		return
+	}
+	if !hasNamePrefixedComment(doc, name) {
+		pass.Reportf(doc.Pos(), "comment for struct or field %s must start with %s and contain Chinese text", name, name)
 	}
 }
 

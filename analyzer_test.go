@@ -77,3 +77,50 @@ const (
 		}
 	}
 }
+
+func TestStructComments(t *testing.T) {
+	src := `package p
+
+// User 用户信息。
+type User struct {
+	// ID 用户编号。
+	ID int
+	// Name 用户名称。
+	Name string
+}
+
+type MissingDoc struct {
+	// ID 编号。
+	ID int
+	Name string
+}
+`
+	file, err := parser.ParseFile(token.NewFileSet(), "test.go", src, parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, decl := range file.Decls {
+		gen, ok := decl.(*ast.GenDecl)
+		if !ok || gen.Tok != token.TYPE {
+			continue
+		}
+		typeSpec := gen.Specs[0].(*ast.TypeSpec)
+		structType := typeSpec.Type.(*ast.StructType)
+		typeDoc := typeSpec.Doc
+		if typeDoc == nil && len(gen.Specs) == 1 {
+			typeDoc = gen.Doc
+		}
+		if typeSpec.Name.Name == "User" && !hasNamePrefixedComment(typeDoc, "User") {
+			t.Error("expected User to have a valid comment")
+		}
+		for _, field := range structType.Fields.List {
+			for _, name := range field.Names {
+				got := hasNamePrefixedComment(field.Doc, name.Name)
+				want := name.Name != "Name" || typeSpec.Name.Name == "User"
+				if got != want {
+					t.Errorf("field %s comment valid = %v, want %v", name.Name, got, want)
+				}
+			}
+		}
+	}
+}

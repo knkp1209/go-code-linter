@@ -8,6 +8,21 @@ The separate `constcomment` rule requires every constant to have a
 name-prefixed comment with Chinese text. Enable it together with `funccomment`
 when both checks are wanted.
 
+The separate `structcomment` rule requires every struct type and every named
+field in that struct to have a name-prefixed comment with Chinese text.
+
+For example:
+
+```go
+// User 用户信息。
+type User struct {
+	// ID 用户编号。
+	ID int
+	// Name 用户名称。
+	Name string
+}
+```
+
 The Chinese description may appear on a later comment line, so an English
 suffix on the first line can be completed by a later Chinese line.
 
