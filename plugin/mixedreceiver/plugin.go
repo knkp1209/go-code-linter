@@ -1,10 +1,10 @@
 package plugin
 
 import (
-	codelint "github.com/knkp1209/go-code-linter"
+	"github.com/knkp1209/go-code-linter/internal/rules/mixedreceiver"
 	plugininternal "github.com/knkp1209/go-code-linter/plugin/internal"
 )
 
 func init() {
-	plugininternal.Register("mixedreceiver", codelint.MixedReceiverAnalyzer)
+	plugininternal.Register("mixedreceiver", mixedreceiver.Analyzer)
 }
