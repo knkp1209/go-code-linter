@@ -2,5 +2,14 @@ version: v2.6.2
 
 plugins:
   - module: github.com/knkp1209/go-code-linter
-    import: github.com/knkp1209/go-code-linter/plugin
-    version: v0.1.4
+    import: github.com/knkp1209/go-code-linter/plugin/funccomment
+    version: v0.1.6
+  - module: github.com/knkp1209/go-code-linter
+    import: github.com/knkp1209/go-code-linter/plugin/constcomment
+    version: v0.1.6
+  - module: github.com/knkp1209/go-code-linter
+    import: github.com/knkp1209/go-code-linter/plugin/structcomment
+    version: v0.1.6
+  - module: github.com/knkp1209/go-code-linter
+    import: github.com/knkp1209/go-code-linter/plugin/mixedreceiver
+    version: v0.1.6

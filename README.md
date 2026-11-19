@@ -14,6 +14,10 @@ field in that struct to have a name-prefixed comment with Chinese text.
 The separate `mixedreceiver` rule reports a struct whose methods mix value and
 pointer receivers. Use one receiver style consistently for each struct.
 
+Each check is an independent module plugin. Enable only the rules needed in
+the golangci-lint configuration; `funccomment`, `constcomment`,
+`structcomment`, and `mixedreceiver` can be configured separately.
+
 For example:
 
 ```go
@@ -33,10 +37,10 @@ suffix on the first line can be completed by a later Chinese line.
 
 - Go 1.25.4 or newer
 - `golangci-lint` 2.6.2 (the version in `.custom-gcl.yml`)
-- A network connection that can download the tagged module version `v0.1.4`
+- A network connection that can download the tagged module version `v0.1.6`
 
 Use the same Go version for the build and lint runs. The published plugin is
-loaded from the `v0.1.4` Git tag in `.custom-gcl.yml`; do not add `path: .` to
+loaded from the `v0.1.6` Git tag in `.custom-gcl.yml`; do not add `path: .` to
 that shared configuration. If the local Go cache was created by another Go
 version, use a fresh writable cache, for example:
 

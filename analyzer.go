@@ -10,19 +10,19 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-var Analyzer = &analysis.Analyzer{
+var FunctionCommentAnalyzer = &analysis.Analyzer{
 	Name: "funccomment",
 	Doc:  "require every function to have a name-prefixed Chinese comment",
 	Run:  run,
 }
 
-var ConstAnalyzer = &analysis.Analyzer{
+var ConstantCommentAnalyzer = &analysis.Analyzer{
 	Name: "constcomment",
 	Doc:  "require every constant to have a name-prefixed Chinese comment",
 	Run:  runConstants,
 }
 
-var StructAnalyzer = &analysis.Analyzer{
+var StructCommentAnalyzer = &analysis.Analyzer{
 	Name: "structcomment",
 	Doc:  "require every struct and field to have a name-prefixed Chinese comment",
 	Run:  runStructs,
