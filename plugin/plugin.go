@@ -6,25 +6,27 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-type functionCommentPlugin struct{}
+type analyzerPlugin struct {
+	analyzers []*analysis.Analyzer
+}
 
 func init() {
-	register.Plugin("funccomment", New)
+	register.Plugin("funccomment", newPlugin(codelint.Analyzer))
+	register.Plugin("constcomment", newPlugin(codelint.ConstAnalyzer))
+	register.Plugin("structcomment", newPlugin(codelint.StructAnalyzer))
+	register.Plugin("mixedreceiver", newPlugin(codelint.MixedReceiverAnalyzer))
 }
 
-func New(settings any) (register.LinterPlugin, error) {
-	return &functionCommentPlugin{}, nil
+func newPlugin(analyzer *analysis.Analyzer) func(any) (register.LinterPlugin, error) {
+	return func(settings any) (register.LinterPlugin, error) {
+		return &analyzerPlugin{analyzers: []*analysis.Analyzer{analyzer}}, nil
+	}
 }
 
-func (p *functionCommentPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
-	return []*analysis.Analyzer{
-		codelint.Analyzer,
-		codelint.ConstAnalyzer,
-		codelint.StructAnalyzer,
-		codelint.MixedReceiverAnalyzer,
-	}, nil
+func (p *analyzerPlugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
+	return p.analyzers, nil
 }
 
-func (p *functionCommentPlugin) GetLoadMode() string {
+func (p *analyzerPlugin) GetLoadMode() string {
 	return register.LoadModeSyntax
 }
